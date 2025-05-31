@@ -5,7 +5,9 @@
   <title>My exercises</title>
 </head>
 
-
+<body>
+  <h1>Edit exercise</h1>
+  
   {% if types %}
     <ul>
       {% for t in types %}
@@ -22,7 +24,6 @@
     <p>No exercise types</p>
   {% endif %}
 
-  <!-- Lomake uuden tyypin lisäämiseen -->
   Add new type:
   <form action="/edit_exercise_types" method="post">
     <input type="text" name="name"/>
