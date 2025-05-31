@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercises Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Exercises Table</h1>
+    <p><a href="/">Back</a></p>
+
+  <form action="/search" method="get">
+    <p>
+    <p>
+      <label for="type">Search for exercise type:</label><br />
+        <select name="type_id" id="type_id" required>
+            {% for t in types %}
+            <option value="{{ t.id }}">{{ t.exercise_type_name }}</option>
+            {% endfor %}
+        </select>
+    </p>
+    <input type="submit" value="Hae" />
+  </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>user_id</th>
+                <th>exercise_type_id</th>
+                <th>exercise_type</th>
+                <th>exercise_class_id </th>
+                <th>label</th>      
+                <th>exercise_weight</th>
+                <th>exercise_date</th>
+                <th>comment</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exercise in exercises %}
+            <tr>
+                <td>{{ exercise.id }}</td>
+                <td>{{ exercise.user_id }}</td>
+                <td>{{ exercise.exercise_type_id }}</td>
+                <td>{{ exercise.exercise_type_name }}</td>
+                <td>{{ exercise.exercise_class_id }}</td>
+                <td>{{ exercise.label }}</td>
+                <td>{{ exercise.exercise_weight }}</td>
+                <td>{{ exercise.exercise_date }}</td>
+                <td>{{ exercise.comment }}</td>
+                {% if exercise.user_id == session.user_id %}
+                <td><a href="/edit/{{ exercise.id }}">Edit</a></td>
+                <td><a href="/remove/{{ exercise.id }}">Delete</a></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

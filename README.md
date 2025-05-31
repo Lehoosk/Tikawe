@@ -1,5 +1,16 @@
 # WoimaÄppi
 Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten 
+## Välipalautuksen 1 tilanne
+
+Tietokantasovellus toteutettu pitkälti kurssin esimerkkisovelluksen pohjalta. Toteutettu useita html-pohjia, joiden rakenne on vielä hyvin pelkistetty. Luotu yksinkertainen sql-relaatiotietokanta, jossa harjoituksiin liittyy harjoiuksen tyyppi (type) ja set/rep-harjoitusluokka (class). Seuraavat ominaisuudet t
+
+* Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen.
+* Käyttäjä pystyy lisäämään, muokkaamaan ja poistamaan tietokohteita (exercises)
+* Käyttäjä näkee sovellukseen lisätyt tietokohteet.
+* Käyttäjä pystyy etsimään tietokohteita harjoituksen tyypin avulla.
+Lisäksi:
+* Käyttäjä pystyy valitsemaan tietokohteelle useamman luokittelun (harjoituksen type ja clas)
+
 ## Sovelluksen toiminnot
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen. Käyttäjältä kerätään kehonpaino tunnusta perustettaessa.
 * Käyttäjä pystyy lisäämään tekemiänsä kuntosaliharjoituksia (pvm, tyyppi, sarjojen määrä, toistojen määrä, paino)

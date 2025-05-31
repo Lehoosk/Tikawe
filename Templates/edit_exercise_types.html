@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>My exercises</title>
+</head>
+
+
+  {% if types %}
+    <ul>
+      {% for t in types %}
+        <li>
+          {{ t.exercise_type_name }}
+            <form action="/edit_exercise_types" method="post">
+            <input type="hidden" name="delete_id" value="{{ t.id }}" />
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No exercise types</p>
+  {% endif %}
+
+  <!-- Lomake uuden tyypin lisäämiseen -->
+  Add new type:
+  <form action="/edit_exercise_types" method="post">
+    <input type="text" name="name"/>
+    <button type="submit">Add</button>
+  </form>
+
+  <p><a href="/">Back</a></p>
+
+</html>
