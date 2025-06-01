@@ -87,7 +87,7 @@ def exercises():
 
 
 @app.route("/edit/<int:exercise_id>", methods=["GET", "POST"])
-def edit_message(exercise_id):
+def edit_exercise(exercise_id):
     exercise = get_exercise(exercise_id)
     user_id = session["user_id"]
 
