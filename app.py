@@ -7,7 +7,6 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = "varmasalasana"
 
 #Page-rendering functions start here:
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -26,7 +25,7 @@ def login():
             session["user_id"] = user_id
             return redirect("/")
         else:
-            return "VIRHE: väärä tunnus tai salasana"
+            return "Error: wrong username or password"
 
 @app.route("/logout")
 def logout():
@@ -152,22 +151,18 @@ def exercise_types():
 
 @app.route("/search")
 def search():
-    type_id = request.args.get("type_id", type=int)          # ← query → type_id
-    user_id = session["user_id"]                             # ← lisäys
-    results = get_exercises(user_id, type_id)                # ← ei rekursiota
-    types   = get_exercise_types(user_id)                    # ← dropdown ei katoa
-    return render_template("exercises.html",
-                           types=types,                      # ← lisäys
-                           exercises=results,
-                           selected_type_id=type_id)         # ← lisäys
-
+    type_id = request.args.get("type_id", type=int)
+    user_id = session["user_id"]
+    results = get_exercises(user_id, type_id)
+    types   = get_exercise_types(user_id)
+    return render_template("exercises.html", types=types, exercises=results, selected_type_id=type_id) 
 
 #These functions are used to query or insert exercises or exercise types or other such stuff
-
 def get_exercise(id):
     sql = "SELECT id, exercise_type_id, exercise_weight, exercise_date, comment FROM exercises WHERE id = ?"
     return query(sql, [id])[0]
 
+#updating exercise class still not done...
 def update_exercise(ex_id, type_id, weight, date, comment):
     sql = """
         UPDATE exercises
@@ -214,7 +209,7 @@ def get_classes():
 def get_exercises(user_id, type_id=None):
 
     if type_id:
-        #this is used if searchin with type_id
+        #this is used if searching with selected type_id. This is used by search-function.
         sql = """
         SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
         exercises.exercise_weight, exercises.exercise_date, comment FROM exercises, exercise_types, classes 
@@ -222,7 +217,7 @@ def get_exercises(user_id, type_id=None):
         """
         params = [user_id, type_id]
     else:
-        #this returns all, by the user
+        #this is the default, it returns all execises done by the user
         sql = """
         SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
         exercises.exercise_weight, exercises.exercise_date, comment FROM exercises, exercise_types, classes 
