@@ -3,7 +3,7 @@ Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten
 
 ## Välipalautuksen 2 tilanne
 Käsitelty palautteen huomiot:
-* Lisätty usernamen ja salasanan validointi
+* Lisätty käyttäjätunnuksen ja salasanan validointi
 
 ## Välipalautuksen 1 tilanne
 
