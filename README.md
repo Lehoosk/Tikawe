@@ -4,6 +4,7 @@ Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten
 ## Välipalautuksen 2 tilanne
 Käsitelty palautteen huomiot:
 * Lisätty käyttäjätunnuksen ja salasanan validointi
+* Hajautettu app.py:stä sql-peruskomennot omaan db.py-tiedostoon ja muu tietokantalogiikka data.py, sivujen renderöinti app.py:ssä
 
 ## Välipalautuksen 1 tilanne
 
@@ -16,7 +17,7 @@ schema.sql-tiedostossa database.db:n scheema, jos se täytyy ajaa uudestaan. Sql
 * Käyttäjä näkee sovellukseen lisätyt tietokohteet. (exercises ja niihin liitetyt luokat)
 * Käyttäjä pystyy etsimään tietokohteita harjoituksen tyypin avulla.
 Lisäksi:
-* Käyttäjä pystyy valitsemaan tietokohteelle useamman luokittelun (harjoituksen type ja clas)
+* Käyttäjä pystyy valitsemaan tietokohteelle useamman luokittelun (harjoituksen type ja class)
 
 ## Sovelluksen toiminnot
 * Käyttäjä pystyy luomaan tunnuksen ja kirjautumaan sisään sovellukseen. Käyttäjältä kerätään kehonpaino tunnusta perustettaessa.
