@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session, g
+from flask import redirect, render_template, request, session, g, flash
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
@@ -34,6 +34,8 @@ def logout():
     
 @app.route("/register", methods=["GET", "POST"])
 def register():
+
+
     if request.method == "GET":
         return render_template("register.html")
 
@@ -41,16 +43,23 @@ def register():
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+    # Validate username and password and match passwords
+
+        if (len(username) < 4 or len(password1) < 8 or len(password2) < 8):
+            flash("Erroe: too short username or password")
+            return redirect("/register")
 
         if password1 != password2:
-            return "Error: passwords don't match"
-
+            flash("Error: passwords don't match")
+            return redirect("/register")
+        
         try:
             create_user(username, password1)
             return render_template("register_success.html")
         except sqlite3.IntegrityError:
-            return "Error: username exists"
-
+            flash("Error: username exists")
+            return redirect("/register")
+        
 @app.route("/new_exercise", methods=["GET", "POST"])
 def new_exercise():
 
