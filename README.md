@@ -5,6 +5,7 @@ Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten
 Käsitelty palautteen huomiot:
 * Lisätty käyttäjätunnuksen ja salasanan validointi
 * Hajautettu app.py:stä sql-peruskomennot omaan db.py-tiedostoon ja muu tietokantalogiikka data.py, sivujen renderöinti app.py:ssä
+* Poistettu turha return funktion new_exercise () lopusta
 
 ## Välipalautuksen 1 tilanne
 

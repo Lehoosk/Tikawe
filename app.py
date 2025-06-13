@@ -86,8 +86,6 @@ def new_exercise():
         db.execute(sql, [user_id, type_id, class_id, weight, ex_date, comment])
         return redirect("/")
 
-    return render_template("new_exercise.html")
-
 @app.route("/exercises")
 def exercises():
     user_id = session["user_id"]
