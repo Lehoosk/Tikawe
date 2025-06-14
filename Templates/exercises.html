@@ -47,7 +47,7 @@
                 <th>label</th>      
                 <th>exercise_weight</th>
                 <th>exercise_date</th>
-                <th>comment</th>
+                <th>note</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -63,7 +63,7 @@
                 <td>{{ exercise.label }}</td>
                 <td>{{ exercise.exercise_weight }}</td>
                 <td>{{ exercise.exercise_date }}</td>
-                <td>{{ exercise.comment }}</td>
+                <td>{{ exercise.note }}</td>
                 {% if exercise.user_id == session.user_id %}
                 <td><a href="/edit/{{ exercise.id }}">Edit</a></td>
                 <td><a href="/remove/{{ exercise.id }}">Delete</a></td>

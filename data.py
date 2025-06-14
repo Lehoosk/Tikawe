@@ -3,27 +3,27 @@ from werkzeug.security import check_password_hash, generate_password_hash
 
 #These functions are used to query or insert exercises or exercise types or other such stuff
 def get_exercise(id):
-    sql = "SELECT id, exercise_type_id, exercise_weight, exercise_date, comment FROM exercises WHERE id = ?"
+    sql = "SELECT id, exercise_type_id, exercise_weight, exercise_date, note FROM exercises WHERE id = ?"
     return db.query(sql, [id])[0]
 
 #updating exercise class still not done...
-def update_exercise(ex_id, type_id, weight, date, comment):
+def update_exercise(ex_id, type_id, weight, date, note):
     sql = """
         UPDATE exercises
         SET exercise_type_id = ?, exercise_weight = ?,
-            exercise_date = ?, comment = ?
+            exercise_date = ?, note = ?
         WHERE id = ?
     """
-    db.execute(sql, [type_id, weight, date, comment, ex_id])
+    db.execute(sql, [type_id, weight, date, note, ex_id])
     
 def remove_exercise(item_id):
     sql = "DELETE FROM exercises WHERE id = ?"
     db.execute(sql, [item_id])
 
-def create_user(username, password):
+def create_user(username, password, default_public):
     password_hash = generate_password_hash(password)
-    sql = "INSERT INTO users (username, password_hash) VALUES (?, ?)"
-    db.execute(sql, [username, password_hash])
+    sql = "INSERT INTO users (username, password_hash, default_public) VALUES (?, ?, ?)"
+    db.execute(sql, [username, password_hash, default_public])
 
     user_id = db.last_insert_id()
     #Create three default exercise types to all users.
@@ -50,13 +50,18 @@ def get_classes():
     sql = "SELECT id, label, sets, reps, alpha FROM classes"
     return db.query(sql, [])
 
-def get_exercises(user_id, type_id=None):
+#this is used to get default public setting from user. This is not row, but one value, thus we need to use prompt to get the first value from the list: [0]["default_public"] .
+def get_user_default(user_id):
+    sql = "SELECT default_public FROM users WHERE id = ?"
+    return db.query(sql, [user_id])[0]["default_public"] 
+
+def get_user_exercises(user_id, type_id=None):
 
     if type_id:
         #this is used if searching with selected type_id. This is used by search-function.
         sql = """
         SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
-        exercises.exercise_weight, exercises.exercise_date, comment FROM exercises, exercise_types, classes 
+        exercises.exercise_weight, exercises.exercise_date, note FROM exercises, exercise_types, classes 
         WHERE exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.user_id = ? AND exercises.exercise_type_id = ? ORDER BY exercise_date DESC
         """
         params = [user_id, type_id]
@@ -64,11 +69,21 @@ def get_exercises(user_id, type_id=None):
         #this is the default, it returns all execises done by the user
         sql = """
         SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
-        exercises.exercise_weight, exercises.exercise_date, comment FROM exercises, exercise_types, classes 
+        exercises.exercise_weight, exercises.exercise_date, note FROM exercises, exercise_types, classes 
         WHERE exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.user_id = ? ORDER BY exercise_date DESC
         """
         params = [user_id]
     return db.query(sql, params)
+
+def get_public_exercises():
+
+    sql = """
+    SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
+    exercises.exercise_weight, exercises.exercise_date, note, public FROM exercises, exercise_types, classes 
+    WHERE exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.public = 1 ORDER BY exercise_date DESC
+    """
+
+    return db.query(sql)
 
 def add_exercise_type(user_id, name):
     sql = "INSERT INTO exercise_types (user_id, exercise_type_name) VALUES (?, ?)"

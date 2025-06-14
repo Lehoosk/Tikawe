@@ -1,7 +1,8 @@
 CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
-    password_hash TEXT
+    password_hash TEXT,
+    default_public INTEGER
 );
 
 CREATE TABLE exercises (
@@ -11,7 +12,9 @@ CREATE TABLE exercises (
     exercise_class_id INTEGER REFERENCES classes,
     exercise_weight REAL,
     exercise_date TEXT,
-    comment TEXT
+    public INTEGER,
+    note TEXT,
+    comment_count INTEGER
 );
 
 CREATE TABLE exercise_types (
@@ -33,3 +36,11 @@ VALUES
  (1, '3 series of 2 reps', 3, 2, 0.35),
  (2, '5 series of 5 reps', 5, 5, 0.20),
  (3, '3 series of 10 reps', 3, 10, 0.10);
+
+ CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    exercise_id INTEGER REFERENCES exercises,
+    user_id INTEGER REFERENCES users,
+    comment_text TEXT,
+    created_date TEXT
+);

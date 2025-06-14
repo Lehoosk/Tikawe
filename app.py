@@ -10,7 +10,8 @@ app.config["SECRET_KEY"] = "varmasalasana"
 #Page-rendering functions start here:
 @app.route("/")
 def index():
-    return render_template("index.html")
+    exercises = data.get_public_exercises()
+    return render_template("index.html", exercises=exercises)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -44,6 +45,10 @@ def register():
         username = request.form["username"]
         password1 = request.form["password1"]
         password2 = request.form["password2"]
+        if request.form.get("public") == "1":
+            public = 1
+        else:
+            public = 0
     # Validate username and password and match passwords
 
         if (len(username) < 4 or len(password1) < 8 or len(password2) < 8):
@@ -55,7 +60,7 @@ def register():
             return redirect("/register")
         
         try:
-            data.create_user(username, password1)
+            data.create_user(username, password1, public)
             return render_template("register_success.html")
         except sqlite3.IntegrityError:
             flash("Error: username exists")
@@ -68,28 +73,33 @@ def new_exercise():
 
     if request.method == "GET":
         types = data.get_exercise_types(user_id)
+        default = data.get_user_default(user_id)
         classes = data.get_classes()
-        return render_template("new_exercise.html", types=types, classes=classes)
+        return render_template("new_exercise.html", types=types, classes=classes, default=default)
     
     if request.method == "POST":
         type_id = int(request.form["type_id"])
         weight  = float(request.form["weight"])
         ex_date = request.form["date"]
         class_id = int(request.form["class_id"])
-        comment = request.form["comment"]
+        note = request.form["note"]
+        if request.form.get("public") == "1":
+            public = 1
+        else:
+            public = 0
 
         sql = """
             INSERT INTO exercises
-                  (user_id, exercise_type_id, exercise_class_id, exercise_weight, exercise_date, comment)
-            VALUES (?, ?, ?, ?, ?, ?)
+                  (user_id, exercise_type_id, exercise_class_id, exercise_weight, exercise_date, public, note)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """
-        db.execute(sql, [user_id, type_id, class_id, weight, ex_date, comment])
+        db.execute(sql, [user_id, type_id, class_id, weight, ex_date, public, note])
         return redirect("/")
 
 @app.route("/exercises")
 def exercises():
     user_id = session["user_id"]
-    exercises = data.get_exercises(user_id)
+    exercises = data.get_user_exercises(user_id)
     types = data.get_exercise_types(user_id)
     return render_template("exercises.html", exercises=exercises, types=types)
 
@@ -107,8 +117,8 @@ def edit_exercise(exercise_id):
         type_id = int(request.form["type_id"])
         weight  = float(request.form["weight"])
         ex_date = request.form["date"]
-        comment  = request.form["comment"]
-        data.update_exercise(exercise_id, type_id, weight, ex_date, comment)
+        note  = request.form["note"]
+        data.update_exercise(exercise_id, type_id, weight, ex_date, note)
         return redirect("/")
 
 @app.route("/remove/<int:exercise_id>", methods=["GET", "POST"])
@@ -161,6 +171,6 @@ def exercise_types():
 def search():
     type_id = request.args.get("type_id", type=int)
     user_id = session["user_id"]
-    results = data.get_exercises(user_id, type_id)
+    results = data.get_user_exercises(user_id, type_id)
     types   = data.get_exercise_types(user_id)
     return render_template("exercises.html", types=types, exercises=results, selected_type_id=type_id) 

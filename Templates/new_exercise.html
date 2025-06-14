@@ -51,10 +51,17 @@
     </p>
 
     <p>
-      Comment:<br />
-      <textarea name="comment" rows="5" cols="40"></textarea>
+      Notes:<br />
+      <textarea name="note" rows="5" cols="40"></textarea>
     </p>
     <input type="submit" value="Create" />
+
+  <p>
+    <input type="checkbox" name="public" id="public" value="1"
+          {% if default %}checked{% endif %}>
+    <label for="public">Show public</label>
+  </p>
+
   </form>
 
     <p><a href="/">Back</a></p>
