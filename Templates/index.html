@@ -32,37 +32,25 @@
     <table>
         <thead>
             <tr>
-                <th>id</th>
-                <th>user_id</th>
-                <th>exercise_type_id</th>
-                <th>exercise_type</th>
-                <th>exercise_class_id </th>
-                <th>label</th>      
-                <th>exercise_weight</th>
-                <th>exercise_date</th>
+                <th>User name</th>
+                <th>exercise_type_name</th>
+                <th>label</th>
+                <th>exercise_weight </th>
+                <th>exercise_date</th>      
                 <th>note</th>
-                <th>public</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>comment_count</th>
             </tr>
         </thead>
         <tbody>
             {% for exercise in exercises %}
             <tr>
-                <td>{{ exercise.id }}</td>
-                <td>{{ exercise.user_id }}</td>
-                <td>{{ exercise.exercise_type_id }}</td>
+                <td>{{ exercise.username }}</td>
                 <td>{{ exercise.exercise_type_name }}</td>
-                <td>{{ exercise.exercise_class_id }}</td>
                 <td>{{ exercise.label }}</td>
                 <td>{{ exercise.exercise_weight }}</td>
                 <td>{{ exercise.exercise_date }}</td>
                 <td>{{ exercise.note }}</td>
-                <td>{{ exercise.public }}</td>
-                {% if exercise.user_id == session.user_id %}
-                <td><a href="/edit/{{ exercise.id }}">Edit</a></td>
-                <td><a href="/remove/{{ exercise.id }}">Delete</a></td>
-                {% endif %}
+                <td>{{ exercise.comment_count }}</td>
             </tr>
             {% endfor %}
         </tbody>

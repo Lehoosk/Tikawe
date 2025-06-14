@@ -6,6 +6,7 @@ Käsitelty palautteen huomiot:
 * Lisätty käyttäjätunnuksen ja salasanan validointi
 * Hajautettu app.py:stä sql-peruskomennot omaan db.py-tiedostoon ja muu tietokantalogiikka data.py, sivujen renderöinti app.py:ssä
 * Poistettu turha return funktion new_exercise () lopusta
+* Rajattu id-kentät pois käyttäjälle näytettävistä tiedoista
 
 Uudet ominaisuudet:
 * Lisätty käyttäjille mahdollisuus määrittää rekisteröinnissä, näyttääkö harjoituksensa julkisina
@@ -32,3 +33,4 @@ Lisäksi:
 * Käyttäjä näkee sovellukseen ehdottoman seuraavan harjoituksen, joka on laskettu % 1 RM:stä. Harjoitus perustuu 2-3 harjoituksen viikkofrekvenssiin, jossa %-tavoite vaihtuu viikoittain.
 * Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja aikasarjaa käyttäjän kehityksestä.
 * [Lisätty 31.5] Käyttäjä pystyy valitsemaan tietokohteelle useamman luokittelun (harjoituksen type ja clas)
+* [Lisätty 14.6] Käyttäjä pystyy valitsemaan tietokohteelle, onko harjoitus julkinen. Käyttäjäprofiilissa on oletusasetus tätä varten.

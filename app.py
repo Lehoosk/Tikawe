@@ -90,8 +90,8 @@ def new_exercise():
 
         sql = """
             INSERT INTO exercises
-                  (user_id, exercise_type_id, exercise_class_id, exercise_weight, exercise_date, public, note)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+                  (user_id, exercise_type_id, exercise_class_id, exercise_weight, exercise_date, public, note, comment_count)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 0)
         """
         db.execute(sql, [user_id, type_id, class_id, weight, ex_date, public, note])
         return redirect("/")

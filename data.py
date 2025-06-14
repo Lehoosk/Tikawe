@@ -60,17 +60,15 @@ def get_user_exercises(user_id, type_id=None):
     if type_id:
         #this is used if searching with selected type_id. This is used by search-function.
         sql = """
-        SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
-        exercises.exercise_weight, exercises.exercise_date, note FROM exercises, exercise_types, classes 
-        WHERE exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.user_id = ? AND exercises.exercise_type_id = ? ORDER BY exercise_date DESC
+        SELECT exercises.user_id, exercises.id, username, exercise_type_name, label, exercise_weight, exercise_date, note, comment_count FROM users, exercises, exercise_types, classes 
+        WHERE exercises.user_id = users.id AND exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.user_id = ? AND exercises.exercise_type_id = ? ORDER BY exercise_date DESC
         """
         params = [user_id, type_id]
     else:
         #this is the default, it returns all execises done by the user
         sql = """
-        SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
-        exercises.exercise_weight, exercises.exercise_date, note FROM exercises, exercise_types, classes 
-        WHERE exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.user_id = ? ORDER BY exercise_date DESC
+        SELECT exercises.user_id, exercises.id, username, exercise_type_name, label, exercise_weight, exercise_date, note, comment_count FROM users, exercises, exercise_types, classes 
+        WHERE exercises.user_id = users.id AND exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.user_id = ? ORDER BY exercise_date DESC
         """
         params = [user_id]
     return db.query(sql, params)
@@ -78,9 +76,8 @@ def get_user_exercises(user_id, type_id=None):
 def get_public_exercises():
 
     sql = """
-    SELECT exercises.id, exercises.user_id, exercises.exercise_type_id, exercise_types.exercise_type_name, exercises.exercise_class_id, classes.label, 
-    exercises.exercise_weight, exercises.exercise_date, note, public FROM exercises, exercise_types, classes 
-    WHERE exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.public = 1 ORDER BY exercise_date DESC
+    SELECT username, exercise_type_name, label, exercise_weight, exercise_date, note, comment_count FROM users, exercises, exercise_types, classes 
+    WHERE exercises.user_id = users.id AND exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.public = 1 ORDER BY exercise_date DESC
     """
 
     return db.query(sql)
