@@ -7,6 +7,11 @@ Käsitelty palautteen huomiot:
 * Hajautettu app.py:stä sql-peruskomennot omaan db.py-tiedostoon ja muu tietokantalogiikka data.py, sivujen renderöinti app.py:ssä
 * Poistettu turha return funktion new_exercise () lopusta
 
+Uudet ominaisuudet:
+* Lisätty käyttäjille mahdollisuus määrittää rekisteröinnissä, näyttääkö harjoituksensa julkisina
+* Lisätty harjoituksien syöttöön checkbox, näkyykö harjoitus julkisena. Oletusarvo haetaan käyttäjän takaa
+* Etusivulle listataan kaikki julkiset harjoitukset
+
 ## Välipalautuksen 1 tilanne
 
 Tietokantasovellus toteutettu pitkälti kurssin esimerkkisovelluksen pohjalta. Toteutettu useita html-pohjia, joiden rakenne on vielä hyvin pelkistetty. Luotu yksinkertainen sql-relaatiotietokanta, jossa harjoituksiin liittyy harjoiuksen tyyppi (type) ja set/rep-harjoitusluokka (class). Seuraavat luetellut ominaisuudet tuotu sovellukseen. Toisisijaisia tietokohteita ei ole vielä toteuttu, ideana että voisi olla että käyttäjä kommentoida tai "tykätä" toisten käyttäjien harjoituksia.
