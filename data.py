@@ -107,3 +107,13 @@ def get_comments(exercise_id):
     """
     params = [exercise_id]
     return db.query(sql, params)
+
+def get_statistics(user_id):
+
+    sql = """
+    SELECT exercise_type_name, label AS class_label, MAX(exercise_weight) AS max_weight, COUNT(*) AS lift_count, MAX(exercise_date) AS last_date
+    FROM   exercises, exercise_types, classes
+    WHERE  exercises.user_id = ? AND exercise_types.id = exercise_type_id AND classes.id = exercise_class_id
+    GROUP BY  exercise_type_id, exercise_class_id
+    """
+    return db.query(sql, [user_id])

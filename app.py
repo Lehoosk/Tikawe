@@ -191,3 +191,9 @@ def comments(exercise_id):
         if comment_text:
             data.post_comment(exercise_id, user_id, comment_text, count+1)
         return redirect(f"/comments/{exercise_id}")
+
+@app.route("/stats")
+def stats():
+    user_id = session["user_id"]
+    stats = data.get_statistics(user_id)
+    return render_template("stats.html", stats=stats)
