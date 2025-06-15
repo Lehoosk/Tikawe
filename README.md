@@ -1,6 +1,22 @@
 # WoimaÄppi
 Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten 
 
+## Käynnistysohjeet
+* Lataa kaikki repositorion tiedostot samaan paikkaan
+* Jos latasit tiedostot zippinä, pura tiedostot ja mene Tikawe-main - kansioon
+
+Seuraavat ohjeet ovat Visual Studio Coden terminaalin komentoina. Samat toimivat pieninä muutoksilla myös muissa terminaaleissa.
+* asemma virtuaaliympäristö komennolla python3 -m venv venv 
+* aktivoi virtuaaliympäristö kommennolla  .\venv\Scripts\Activate.ps1   
+* asenna flask-kirjasto: pip install flask
+* käynnistä web-sovellus: flask run
+* avaa nettiselain ja mene sivulle: http://127.0.0.1:5000/
+
+Repositoriossa on valmiina database.db, jossa muutama rivi syötettynä testaamista varten. Jos tietokantaa tarvitsee muokata tai esim. tyhjentää, se onnistuu lataamalla kansioon sqllite3.exe-sovellus. 
+Mukana tulee myös sovelluksen käyttämä SQL-scheema. Sen pystyy lataamaan tyhjään tietokantaan komennolla:  .\sqlite3.exe .\database.db ".read schema.sql"
+
+Sovellusta on testattu näillä tiedostoilla. Saadun palautteen perusteella voi olla tarpeellista muokata Templates-kansion nimi muotoon "templates"
+
 ## Välipalautuksen 2 tilanne
 Käsitelty palautteen huomiot:
 * Lisätty käyttäjätunnuksen ja salasanan validointi
@@ -14,6 +30,10 @@ Uudet ominaisuudet:
 * Etusivulle listataan kaikki julkiset harjoitukset
 * Lisätty toisijainen tietokohde, eli mahdollisuus kommentoida toisten harjoituksia
 * Lisätty tilastosivu
+
+Seuraavassa versiossa (ainakin):
+* Ulkoasu kuntoon
+* PR-laskenta
 
 ## Välipalautuksen 1 tilanne
 
