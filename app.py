@@ -174,3 +174,20 @@ def search():
     results = data.get_user_exercises(user_id, type_id)
     types   = data.get_exercise_types(user_id)
     return render_template("exercises.html", types=types, exercises=results, selected_type_id=type_id) 
+
+@app.route("/comments/<int:exercise_id>", methods=["GET", "POST"])
+def comments(exercise_id):
+
+    exercise = data.get_exercise(exercise_id)
+    comments = data.get_comments(exercise_id)
+    user_id = session["user_id"]
+    count = int(exercise["comment_count"])
+
+    if request.method == "GET":
+        return render_template("comments.html", exercise=exercise, comments=comments)
+
+    if request.method == "POST":
+        comment_text = request.form["comment"]
+        if comment_text:
+            data.post_comment(exercise_id, user_id, comment_text, count+1)
+        return redirect(f"/comments/{exercise_id}")

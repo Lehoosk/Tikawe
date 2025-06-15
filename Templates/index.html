@@ -50,7 +50,7 @@
                 <td>{{ exercise.exercise_weight }}</td>
                 <td>{{ exercise.exercise_date }}</td>
                 <td>{{ exercise.note }}</td>
-                <td>{{ exercise.comment_count }}</td>
+                <td><a href="/comments/{{ exercise.id }}">{{ exercise.comment_count }}</a></td>
             </tr>
             {% endfor %}
         </tbody>

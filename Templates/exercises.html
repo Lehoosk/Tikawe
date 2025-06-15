@@ -33,19 +33,18 @@
             {% endfor %}
         </select>
     </p>
-    <input type="submit" value="Hae" />
+    <input type="submit" value="Filter" />
   </form>
 
     <table>
         <thead>
             <tr>
-                <th>User name</th>
-                <th>exercise_type_name</th>
-                <th>label</th>
-                <th>exercise_weight </th>
-                <th>exercise_date</th>      
-                <th>note</th>
-                <th>comment_count</th>
+                <th>Exercise</th>
+                <th>Class</th>
+                <th>Weight </th>
+                <th>Date</th>      
+                <th>Notes</th>
+                <th>Comments</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -53,19 +52,14 @@
         <tbody>
             {% for exercise in exercises %}
             <tr>
-                <td>{{ exercise.id }}</td>
-                <td>{{ exercise.user_id }}</td>
-                <td>{{ exercise.exercise_type_id }}</td>
                 <td>{{ exercise.exercise_type_name }}</td>
-                <td>{{ exercise.exercise_class_id }}</td>
                 <td>{{ exercise.label }}</td>
                 <td>{{ exercise.exercise_weight }}</td>
                 <td>{{ exercise.exercise_date }}</td>
                 <td>{{ exercise.note }}</td>
-                {% if exercise.user_id == session.user_id %}
+                <td><a href="/comments/{{ exercise.id }}">{{ exercise.comment_count }}</a></td>
                 <td><a href="/edit/{{ exercise.id }}">Edit</a></td>
                 <td><a href="/remove/{{ exercise.id }}">Delete</a></td>
-                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

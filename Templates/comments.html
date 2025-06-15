@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Comments</title>
+</head>
+
+<body>
+  <h1>Leave a comment</h1>
+  {% for c in comments %}
+  {{ c.username }} says:
+  {{ c.comment_text }}
+  <br>
+  {% endfor %}
+
+ <form action="/comments/{{ exercise.id }}" method="post">
+
+    <p>
+      <label for="note">Add comment:</label><br />
+      <textarea name="comment" rows="5" cols="40"></textarea>
+    </p>
+
+    <input type="submit" value="Post" />
+  </form>
+
+  <p><a href="/">Back</a></p>
+</body>
+</html>

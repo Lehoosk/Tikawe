@@ -12,6 +12,8 @@ Uudet ominaisuudet:
 * Lisätty käyttäjille mahdollisuus määrittää rekisteröinnissä, näyttääkö harjoituksensa julkisina
 * Lisätty harjoituksien syöttöön checkbox, näkyykö harjoitus julkisena. Oletusarvo haetaan käyttäjän takaa
 * Etusivulle listataan kaikki julkiset harjoitukset
+* Lisätty toisijainen tietokohde, eli mahdollisuus kommentoida toisten harjoituksia
+* Lisätty tilastosivu
 
 ## Välipalautuksen 1 tilanne
 
