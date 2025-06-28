@@ -2,7 +2,10 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
     password_hash TEXT,
-    default_public INTEGER
+    default_public INTEGER,
+    created TEXT,
+    user_exercise_count INTEGER,
+    user_comment_count INTEGER
 );
 
 CREATE TABLE exercises (

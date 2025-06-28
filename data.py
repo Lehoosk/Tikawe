@@ -27,7 +27,7 @@ def add_exercise(user_id, type_id, class_id, weight, ex_date, public, note):
 def get_exercise(id):
     "Get single exercise attributes"
     sql = """
-    SELECT id, exercise_type_id, exercise_weight, exercise_date, note, comment_count FROM exercises WHERE id = ?
+    SELECT id, user_id, exercise_type_id, exercise_weight, exercise_date, note, comment_count FROM exercises WHERE id = ?
     """
     return db.query(sql, [id])[0]
 
@@ -50,7 +50,7 @@ def remove_exercise(item_id):
 def create_user(username, password, default_public):
     "Creates a new users"
     password_hash = generate_password_hash(password)
-    sql = "INSERT INTO users (username, password_hash, default_public) VALUES (?, ?, ?)"
+    sql = "INSERT INTO users (username, password_hash, default_public, created, user_exercise_count, user_comment_count ) VALUES (?, ?, ?, datetime('now', 'localtime'), 0 ,0)"
     db.execute(sql, [username, password_hash, default_public])
 
     user_id = db.last_insert_id()
@@ -146,3 +146,28 @@ def get_statistics(user_id):
     GROUP BY  exercise_type_id, exercise_class_id
     """
     return db.query(sql, [user_id])
+
+def add_exercise_counter(user_id, value):
+    "Adds or substacts from total exercise count"
+    sql = """
+    UPDATE users
+    SET    user_exercise_count = user_exercise_count + ?
+    WHERE  id = ?
+    """
+    params = [value, user_id]
+    db.execute(sql, params)
+
+def get_user_page_stats(user_id):
+    "#this is used to get values for user page"
+    sql = """
+    SELECT username, created, user_exercise_count, user_comment_count 
+    FROM users WHERE id = ?
+    """
+    stats  = dict(db.query(sql, [user_id])[0])
+    rows = get_user_exercises(user_id)
+    if rows:
+        stats["last_exercise"] = rows[0]["exercise_date"]
+    else:
+        stats["last_exercise"] = "No exercises yet"
+    return stats
+

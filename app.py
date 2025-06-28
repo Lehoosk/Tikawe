@@ -87,6 +87,7 @@ def new_exercise():
         else:
             public = 0
         data.add_exercise(user_id=user_id, type_id=type_id, class_id=class_id, weight=weight, ex_date=ex_date, public=public, note=note)
+        data.add_exercise_counter(user_id, 1)
         return redirect("/")
 
 @app.route("/exercises")
@@ -127,6 +128,7 @@ def remove(exercise_id):
     if request.method == "POST":
         if "remove" in request.form:
             data.remove_exercise(exercise_id)
+            data.add_exercise_counter(exercise["user_id"], -1)
             return redirect("/exercises")
         else:
             return redirect("/")
@@ -185,3 +187,12 @@ def stats():
     user_id = session["user_id"]
     stats_list = data.get_statistics(user_id)
     return render_template("stats.html", stats=stats_list)
+
+@app.route("/user_page", defaults={"user_id": None})
+@app.route("/user_page/<int:user_id>")
+def user_page(user_id):
+    "Renders the user page"
+    if user_id is None:
+        user_id = session["user_id"]
+    stats_list = data.get_user_page_stats(user_id)
+    return render_template("user.html", user=stats_list)
