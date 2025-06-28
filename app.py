@@ -1,8 +1,6 @@
-from flask import Flask
-from flask import redirect, render_template, request, session, g, flash
-import db
-import data
 import sqlite3
+from flask import Flask, redirect, render_template, request, session, flash
+import data
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "varmasalasana"
@@ -10,11 +8,13 @@ app.config["SECRET_KEY"] = "varmasalasana"
 #Page-rendering functions start here:
 @app.route("/")
 def index():
-    exercises = data.get_public_exercises()
-    return render_template("index.html", exercises=exercises)
+    """Render front page"""
+    exercises_list = data.get_public_exercises()
+    return render_template("index.html", exercises=exercises_list)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """Render login page"""
     if request.method == "GET":
         return render_template("login.html")
 
@@ -31,12 +31,13 @@ def login():
 
 @app.route("/logout")
 def logout():
+    "Render logout page"
     session.pop("user_id", None)
     return redirect("/")
-    
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
-
+    "Render register page. GET method used when first loading the page, POST when user has clicked register button"
 
     if request.method == "GET":
         return render_template("register.html")
@@ -50,25 +51,23 @@ def register():
         else:
             public = 0
     # Validate username and password and match passwords
-
         if (len(username) < 4 or len(password1) < 8 or len(password2) < 8):
             flash("Erroe: too short username or password")
             return redirect("/register")
 
         if password1 != password2:
             flash("Error: passwords don't match")
-            return redirect("/register")
-        
+            return redirect("/register")        
         try:
             data.create_user(username, password1, public)
             return render_template("register_success.html")
         except sqlite3.IntegrityError:
             flash("Error: username exists")
             return redirect("/register")
-        
+ 
 @app.route("/new_exercise", methods=["GET", "POST"])
 def new_exercise():
-
+    """Used to log a new exercise to user"""
     user_id = session["user_id"]
 
     if request.method == "GET":
@@ -76,7 +75,7 @@ def new_exercise():
         default = data.get_user_default(user_id)
         classes = data.get_classes()
         return render_template("new_exercise.html", types=types, classes=classes, default=default)
-    
+   
     if request.method == "POST":
         type_id = int(request.form["type_id"])
         weight  = float(request.form["weight"])
@@ -87,25 +86,21 @@ def new_exercise():
             public = 1
         else:
             public = 0
-
-        sql = """
-            INSERT INTO exercises
-                  (user_id, exercise_type_id, exercise_class_id, exercise_weight, exercise_date, public, note, comment_count)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 0)
-        """
-        db.execute(sql, [user_id, type_id, class_id, weight, ex_date, public, note])
+        data.add_exercise(user_id=user_id, type_id=type_id, class_id=class_id, weight=weight, ex_date=ex_date, public=public, note=note)
         return redirect("/")
 
 @app.route("/exercises")
 def exercises():
+    "Renders user's exercise history page"
     user_id = session["user_id"]
-    exercises = data.get_user_exercises(user_id)
-    types = data.get_exercise_types(user_id)
-    return render_template("exercises.html", exercises=exercises, types=types)
+    exercises_list = data.get_user_exercises(user_id)
+    types_list = data.get_exercise_types(user_id)
+    return render_template("exercises.html", exercises=exercises_list, types=types_list)
 
 
 @app.route("/edit/<int:exercise_id>", methods=["GET", "POST"])
 def edit_exercise(exercise_id):
+    "Renders page to edit single exercise"
     exercise = data.get_exercise(exercise_id)
     user_id = session["user_id"]
 
@@ -123,7 +118,7 @@ def edit_exercise(exercise_id):
 
 @app.route("/remove/<int:exercise_id>", methods=["GET", "POST"])
 def remove(exercise_id):
-
+    "Renders page to delete a single exercise"
     exercise = data.get_exercise(exercise_id)
 
     if request.method == "GET":
@@ -139,7 +134,7 @@ def remove(exercise_id):
 
 @app.route("/edit_exercise_types", methods=["GET", "POST"])
 def exercise_types():
-
+    "Renders page to edit users exercise types"
     user_id = session["user_id"]
     types = data.get_exercise_types(user_id)
 
@@ -149,42 +144,34 @@ def exercise_types():
     if request.method == "POST":
         if "delete_id" in request.form:
             type_id = int(request.form["delete_id"])
-            db.execute(
-            "DELETE FROM exercise_types WHERE id = ? AND user_id = ?",
-            [type_id, user_id]
-            )
+            data.delete_exercise_type(user_id, type_id)
 
         elif "name" in request.form:
             name = request.form["name"].strip()
             if name:
-                try:
-                    db.execute(
-                    "INSERT INTO exercise_types (user_id, exercise_type_name) VALUES (?, ?)",
-                    [user_id, name]
-                )
-                except sqlite3.IntegrityError:
-                    pass
+                data.add_exercise_type(user_id, name)
 
-    return redirect("/edit_exercise_types")      
+    return redirect("/edit_exercise_types")
 
 @app.route("/search")
 def search():
+    "Renders a page to view all exercises or by a certain type"
     type_id = request.args.get("type_id", type=int)
     user_id = session["user_id"]
     results = data.get_user_exercises(user_id, type_id)
     types   = data.get_exercise_types(user_id)
-    return render_template("exercises.html", types=types, exercises=results, selected_type_id=type_id) 
+    return render_template("exercises.html", types=types, exercises=results, selected_type_id=type_id)
 
 @app.route("/comments/<int:exercise_id>", methods=["GET", "POST"])
 def comments(exercise_id):
-
+    "Renders the comment page"
     exercise = data.get_exercise(exercise_id)
-    comments = data.get_comments(exercise_id)
+    comments_list = data.get_comments(exercise_id)
     user_id = session["user_id"]
     count = int(exercise["comment_count"])
 
     if request.method == "GET":
-        return render_template("comments.html", exercise=exercise, comments=comments)
+        return render_template("comments.html", exercise=exercise, comments=comments_list)
 
     if request.method == "POST":
         comment_text = request.form["comment"]
@@ -194,6 +181,7 @@ def comments(exercise_id):
 
 @app.route("/stats")
 def stats():
+    "Renders the statistics page"
     user_id = session["user_id"]
-    stats = data.get_statistics(user_id)
-    return render_template("stats.html", stats=stats)
+    stats_list = data.get_statistics(user_id)
+    return render_template("stats.html", stats=stats_list)

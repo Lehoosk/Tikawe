@@ -1,5 +1,5 @@
 # WoimaÄppi
-Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten 
+Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten.
 
 ## Käynnistysohjeet
 * Lataa kaikki repositorion tiedostot samaan paikkaan
@@ -16,6 +16,13 @@ Repositoriossa on valmiina database.db, jossa muutama rivi syötettynä testaami
 Mukana tulee myös sovelluksen käyttämä SQL-scheema. Sen pystyy lataamaan tyhjään tietokantaan komennolla:  .\sqlite3.exe .\database.db ".read schema.sql"
 
 Sovellusta on testattu näillä tiedostoilla. Saadun palautteen perusteella voi olla tarpeellista muokata Templates-kansion nimi muotoon "templates"
+
+## Lopullisen palautuksen tilanne
+Käsitelty palautteen huomiot:
+* Poistettu turha import g
+* Koodin laatua pyritty parantamaan pylintillä. Kommentit lisätty jokaiseen funktioon.
+* Viimeiset tietokantakyselyt siirretty pois app.py:stä pois
+
 
 ## Välipalautuksen 2 tilanne
 Käsitelty palautteen huomiot:
@@ -56,3 +63,4 @@ Lisäksi:
 * Sovelluksessa on käyttäjäsivut, jotka näyttävät tilastoja ja aikasarjaa käyttäjän kehityksestä.
 * [Lisätty 31.5] Käyttäjä pystyy valitsemaan tietokohteelle useamman luokittelun (harjoituksen type ja clas)
 * [Lisätty 14.6] Käyttäjä pystyy valitsemaan tietokohteelle, onko harjoitus julkinen. Käyttäjäprofiilissa on oletusasetus tätä varten.
+* [Lisätty 15.6] Käyttäjät pystyvät kommentoimaan toisten käyttäjien harjoituksia sanallisesti
