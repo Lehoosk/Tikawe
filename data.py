@@ -170,4 +170,4 @@ def get_user_page_stats(user_id):
     else:
         stats["last_exercise"] = "No exercises yet"
     return stats
-
+"test"
