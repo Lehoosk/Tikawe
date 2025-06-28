@@ -45,7 +45,7 @@
         <tbody>
             {% for exercise in exercises %}
             <tr>
-                <td>{{ exercise.username }}</td>
+                <td><a href="/user_page/{{exercise.user_id}}">{{ exercise.username }}</a></td>
                 <td>{{ exercise.exercise_type_name }}</td>
                 <td>{{ exercise.label }}</td>
                 <td>{{ exercise.exercise_weight }}</td>
