@@ -24,6 +24,24 @@ def add_exercise(user_id, type_id, class_id, weight, ex_date, public, note):
         [user_id, type_id, class_id, weight, ex_date, public, note],
     )
 
+def add_pr(user_id, type_id, class_id, weight, ex_date):
+    "logs new pr results based on three different formulas"
+
+    reps = int(db.query("SELECT reps FROM classes WHERE id = ?",[class_id])[0]["reps"])
+    e1rm_epley = int(weight * (1 + reps / 30))
+    e1rm_lombardi = int(weight * (reps ** 0.10))
+    e1rm_brzycki = int(weight * 36 / (37 - reps))
+
+    db.execute(
+        """
+        INSERT INTO pr_records 
+        (user_id, exercise_type_id, exercise_class_id, e1rm_epley, e1rm_lombardi, e1rm_brzycki, ex_weight, pr_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """,
+        [user_id, type_id, class_id, e1rm_epley, e1rm_lombardi, e1rm_brzycki, weight, ex_date],
+    )
+
+
 def get_exercise(id):
     "Get single exercise attributes"
     sql = """
@@ -78,7 +96,7 @@ def get_exercise_types(user_id):
 
 def get_classes():
     "Return all the default classes"
-    sql = "SELECT id, label, sets, reps, alpha FROM classes"
+    sql = "SELECT id, label FROM classes"
     return db.query(sql, [])
 
 def get_user_default(user_id):
@@ -107,7 +125,7 @@ def get_user_exercises(user_id, type_id=None):
 def get_public_exercises():
     "Return the list of all public marked exercises from all the users"
     sql = """
-    SELECT exercises.id, username, exercise_type_name, label, exercise_weight, exercise_date, note, comment_count FROM users, exercises, exercise_types, classes 
+    SELECT exercises.id, exercises.user_id, username, exercise_type_name, label, exercise_weight, exercise_date, note, comment_count FROM users, exercises, exercise_types, classes 
     WHERE exercises.user_id = users.id AND exercise_types.id = exercises.exercise_type_id AND classes.id = exercises.exercise_class_id AND exercises.public = 1 ORDER BY exercise_date DESC
     """
 
@@ -131,7 +149,7 @@ def post_comment(exercise_id, user_id, text, new_count):
 def get_comments(exercise_id):
     "List all the comments in single exercise"
     sql = """
-    SELECT username, comment_text, created_date FROM users, comments 
+    SELECT user_id, username, comment_text, created_date FROM users, comments 
     WHERE comments.user_id = users.id AND comments.exercise_id =? ORDER BY created_date DESC
     """
     params = [exercise_id]
@@ -144,6 +162,31 @@ def get_statistics(user_id):
     FROM   exercises, exercise_types, classes
     WHERE  exercises.user_id = ? AND exercise_types.id = exercise_type_id AND classes.id = exercise_class_id
     GROUP BY  exercise_type_id, exercise_class_id
+    """
+    return db.query(sql, [user_id])
+
+
+def get_pr_statistics(user_id):
+    "Retuns latest pr weights"
+    sql = """
+        SELECT pr.exercise_type_id,
+               et.exercise_type_name,
+               pr.e1rm_epley,
+               pr.e1rm_lombardi,
+               pr.e1rm_brzycki,
+               pr.ex_weight,
+               pr.pr_date
+        FROM   pr_records      AS pr
+        JOIN   exercise_types  AS et
+               ON et.id = pr.exercise_type_id
+        WHERE  pr.user_id = ?
+          AND  pr.pr_date = (
+                   SELECT MAX(pr_date)
+                   FROM   pr_records
+                   WHERE  user_id = pr.user_id
+                     AND  exercise_type_id = pr.exercise_type_id
+               )
+        ORDER  BY et.exercise_type_name;
     """
     return db.query(sql, [user_id])
 
@@ -170,4 +213,3 @@ def get_user_page_stats(user_id):
     else:
         stats["last_exercise"] = "No exercises yet"
     return stats
-"test"

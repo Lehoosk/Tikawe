@@ -87,6 +87,7 @@ def new_exercise():
         else:
             public = 0
         data.add_exercise(user_id=user_id, type_id=type_id, class_id=class_id, weight=weight, ex_date=ex_date, public=public, note=note)
+        data.add_pr(user_id=user_id, type_id=type_id, class_id=class_id, weight=weight, ex_date=ex_date)
         data.add_exercise_counter(user_id, 1)
         return redirect("/")
 
@@ -186,7 +187,8 @@ def stats():
     "Renders the statistics page"
     user_id = session["user_id"]
     stats_list = data.get_statistics(user_id)
-    return render_template("stats.html", stats=stats_list)
+    pr_list = data.get_pr_statistics(user_id)
+    return render_template("stats.html", stats=stats_list, pr=pr_list)
 
 @app.route("/user_page", defaults={"user_id": None})
 @app.route("/user_page/<int:user_id>")

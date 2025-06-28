@@ -8,15 +8,15 @@
 <h1>Your lifting Statistics</h1>
 
 {% for group in stats | groupby('exercise_type_name') %}
-  <h3>{{ group.grouper }}</h3>
+  <h2>Basic training stats: {{ group.grouper }}</h3>
 
-  <table>
+    <table border="1" cellpadding="6" cellspacing="0">
     <thead>
       <tr>
         <th>Class</th>
-        <th>Max&nbsp;(kg)</th>
-        <th>Total&nbsp;lifts</th>
-        <th>Last&nbsp;lift&nbsp;date</th>
+        <th>Max (kg)</th>
+        <th>Total lifts</th>
+        <th>Last lift date</th>
       </tr>
     </thead>
     <tbody>
@@ -25,11 +25,38 @@
         <td>{{ r.class_label }}</td>
         <td>{{ r.max_weight }}</td>
         <td>{{ r.lift_count }}</td>
-        <td>{{ r.last_date }}</td>
+        <td>{{ r.last_date }}</td> 
       </tr>
     {% endfor %}
   </table>
 {% endfor %}
+
+<h2>Your latest PR estimates</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>Exercise</th>
+      <th>Last lift date</th>
+      <th>Weight</th>
+      <th>Epley 1 RM</th>
+      <th>Lombardi 1 RM</th>
+      <th>Brzycki&1 RM</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for row in pr %}
+    <tr>
+      <td>{{ row.exercise_type_name }}</td>
+      <td>{{ row.pr_date }}</td>
+      <td>{{ row.ex_weight }}</td>
+      <td>{{ row.e1rm_epley }}</td>
+      <td>{{ row.e1rm_lombardi }}</td>
+      <td>{{ row.e1rm_brzycki }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 <p><a href="/">Back to home</a></p>
 </body>
