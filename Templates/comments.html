@@ -8,7 +8,7 @@
 <body>
   <h1>Leave a comment</h1>
   {% for c in comments %}
-  {{ c.username }} says:
+  <a href="/user_page/{{c.user_id}}">{{ c.username }}</a> says:
   {{ c.comment_text }}
   <br>
   {% endfor %}
