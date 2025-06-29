@@ -41,7 +41,6 @@ def add_pr(user_id, type_id, class_id, weight, ex_date):
         [user_id, type_id, class_id, e1rm_epley, e1rm_lombardi, e1rm_brzycki, weight, ex_date],
     )
 
-
 def get_exercise(id):
     "Get single exercise attributes"
     sql = """
@@ -165,7 +164,6 @@ def get_statistics(user_id):
     """
     return db.query(sql, [user_id])
 
-
 def get_pr_statistics(user_id):
     "Retuns latest pr weights"
     sql = """
@@ -199,6 +197,17 @@ def add_exercise_counter(user_id, value):
     """
     params = [value, user_id]
     db.execute(sql, params)
+
+def add_comment_counter(user_id):
+    "Adds total comment count"
+    sql = """
+    UPDATE users
+    SET    user_comment_count = user_comment_count + 1
+    WHERE  id = ?
+    """
+    params = [user_id]
+    db.execute(sql, params)
+
 
 def get_user_page_stats(user_id):
     "#this is used to get values for user page"

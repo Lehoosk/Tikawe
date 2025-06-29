@@ -90,7 +90,7 @@ def new_exercise():
         default = data.get_user_default(user_id)
         classes = data.get_classes()
         return render_template("new_exercise.html", types=types, classes=classes, default=default)
-  
+
     if request.method == "POST":
         check_csrf()
         type_id = int(request.form["type_id"])
@@ -105,7 +105,7 @@ def new_exercise():
         data.add_exercise(user_id=user_id, type_id=type_id, class_id=class_id, weight=weight, ex_date=ex_date, public=public, note=note)
         data.add_pr(user_id=user_id, type_id=type_id, class_id=class_id, weight=weight, ex_date=ex_date)
         data.add_exercise_counter(user_id, 1)
-        return redirect("/")
+    return redirect("/")
 
 @app.route("/exercises")
 def exercises():
@@ -159,9 +159,7 @@ def remove(exercise_id):
             data.remove_exercise(exercise_id)
             data.add_exercise_counter(exercise["user_id"], -1)
             return redirect("/exercises")
-        else:
-            return redirect("/")
-
+    return redirect("/")
 
 @app.route("/edit_exercise_types", methods=["GET", "POST"])
 def exercise_types():
@@ -224,6 +222,8 @@ def comments(exercise_id):
         comment_text = request.form["comment"]
         if comment_text:
             data.post_comment(exercise_id, user_id, comment_text, count+1)
+            data.add_comment_counter(user_id)
+        
         return redirect(f"/comments/{exercise_id}")
 
 @app.route("/stats")

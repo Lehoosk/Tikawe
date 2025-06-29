@@ -22,7 +22,7 @@ Käsitelty palautteen huomiot:
 * Poistettu turha import g
 * Koodin laatua pyritty parantamaan pylintillä. Kommentit lisätty jokaiseen funktioon.
 * Viimeiset tietokantakyselyt siirretty pois app.py:stä pois
-* Lisätty käyttäjäsivu, joka aukeaa myös muille käyttäjille
+* Lisätty käyttäjäsivu, joka aukeaa myös muille käyttäjille. Käyttäjäsivulle kerätään tietoa käyttäjän rekisteröitymisestä, viimeistä treenistä, treenien ja kommentien lukumäärästä.
 * Yritetty muokata Templates-kansion nimi -> templates, mutta tällöin git ei enää päivittänyt muutoksia. Palautus toimii itselläni ladattaessa sellaisenaan.
 * Poistettu CSRF-haavoittuvuus ja lisätty käyttäjän oikeuksien tarkastuksia
 
