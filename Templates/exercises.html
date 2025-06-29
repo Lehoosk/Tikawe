@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exercises Table</title>
-
+    <link rel="stylesheet" href="/static/main.css">
 </head>
-<body>
-    <h1>Exercises Table</h1>
-    <p><a href="/">Back</a></p>
-
+<body><div class="nav">
+    <h3>Exercises Table</h3>
+    <p><a href="/">Back</a></p></div>
+<div class="content">
   <form action="/search" method="get">
     <p>
     <p>
@@ -51,7 +49,7 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
+    </table></div>
 
 </body>
 </html>

@@ -3,10 +3,13 @@
 
 <head>
   <title>Comments</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 
-<body>
-  <h1>Leave a comment</h1>
+<body>   <div class="nav">
+  <h3>Leave a comment</h3><a href="/">Back</a></p></div>
+
+  <div class="content">
   {% for c in comments %}
   <a href="/user_page/{{c.user_id}}">{{ c.username }}</a> says:
   {{ c.comment_text }}
@@ -22,7 +25,6 @@
     <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Post" />
   </form>
-
-  <p><a href="/">Back</a></p>
+  <p></div>
 </body>
 </html>

@@ -25,6 +25,7 @@ Käsitelty palautteen huomiot:
 * Lisätty käyttäjäsivu, joka aukeaa myös muille käyttäjille. Käyttäjäsivulle kerätään tietoa käyttäjän rekisteröitymisestä, viimeistä treenistä, treenien ja kommentien lukumäärästä.
 * Yritetty muokata Templates-kansion nimi -> templates, mutta tällöin git ei enää päivittänyt muutoksia. Palautus toimii itselläni ladattaessa sellaisenaan.
 * Poistettu CSRF-haavoittuvuus ja lisätty käyttäjän oikeuksien tarkastuksia
+* Ulkoasua kehitetty CSS:llä
 
 Muita parannuksia:
 * Lisätty yksinkertaiset ennusteet teoreettiselle maksimille. Maksimi lasketaan kolmella eri kaavalla. Tulokset esitetään statistics-sivulla, vain uusin tulos esitetään

@@ -3,10 +3,15 @@
 
 <head>
   <title>PowerÄppi</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 
 <body>
+    <div class="header">
   <h1>Welcome to the PowerÄppi</h1>
+  </div>
+
+  <div class="nav">
   <p>
     <a href="/register">Create a new account</a> |
     {% if session.user_id %}
@@ -15,21 +20,21 @@
     <a href="/login">Log in</a>
     {% endif %}
   </p>
-
+</div>
   {% if session.user_id %}
-  <hr width="90%" />
+
+  <div class="nav">
   <p>
     <a href="/new_exercise">Log new exercise</a> | 
     <a href="/exercises">Show my exercise history</a> |
     <a href="/edit_exercise_types">Manage my exercise types</a> |
     <a href="/stats">My exercise statistics</a> |
-    <a href="/user_page">My user page</a> |
+    <a href="/user_page">My user page</a>
   </p>
   {% endif %}
-
+  </div>
   {% if session.user_id %}
-  <hr width="90%" />
-
+  <div class="content">
     <table border="1" cellpadding="6" cellspacing="0">
         <thead>
             <tr>
@@ -55,8 +60,7 @@
             </tr>
             {% endfor %}
         </tbody>
-    </table>
-
+    </table></div>
   {% endif %}
 
   </body>

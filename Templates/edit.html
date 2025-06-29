@@ -3,11 +3,13 @@
 
 <head>
   <title>Edit exercise</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 
-<body>
-  <h1>Edit exercise</h1>
+<body><div class="nav">
+  <h3>Edit exercise</h3><p><a href="/">Back</a></p></div>
 
+<div class="content">
  <form action="/edit/{{ exercise.id }}" method="post">
 
     <p>
@@ -39,6 +41,6 @@
     <input type="submit" value="Save" />
   </form>
 
-  <p><a href="/">Back</a></p>
+  </div>
 </body>
 </html>

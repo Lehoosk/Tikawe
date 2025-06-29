@@ -3,11 +3,13 @@
 
 <head>
   <title>My exercises</title>
+  <link rel="stylesheet" href="/static/main.css">
 </head>
 
-<body>
-  <h1>Edit exercise</h1>
-  
+<body><div class="nav">
+  <h3>Edit exercise</h3><p><a href="/">Back</a></p></div>
+
+  <div class="content">
   {% if types %}
     <ul>
       {% for t in types %}
@@ -32,6 +34,6 @@
     <button type="submit">Add</button>
   </form>
 
-  <p><a href="/">Back</a></p>
-
+  </div>
+</body>
 </html>

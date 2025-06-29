@@ -167,23 +167,11 @@ def get_statistics(user_id):
 def get_pr_statistics(user_id):
     "Retuns latest pr weights"
     sql = """
-        SELECT pr.exercise_type_id,
-               et.exercise_type_name,
-               pr.e1rm_epley,
-               pr.e1rm_lombardi,
-               pr.e1rm_brzycki,
-               pr.ex_weight,
-               pr.pr_date
-        FROM   pr_records      AS pr
-        JOIN   exercise_types  AS et
-               ON et.id = pr.exercise_type_id
+        SELECT pr.exercise_type_id, et.exercise_type_name, pr.e1rm_epley, pr.e1rm_lombardi, pr.e1rm_brzycki, pr.ex_weight, pr.pr_date
+        FROM   pr_records AS pr
+        JOIN   exercise_types AS et ON et.id = pr.exercise_type_id
         WHERE  pr.user_id = ?
-          AND  pr.pr_date = (
-                   SELECT MAX(pr_date)
-                   FROM   pr_records
-                   WHERE  user_id = pr.user_id
-                     AND  exercise_type_id = pr.exercise_type_id
-               )
+          AND  pr.pr_date = (SELECT MAX(pr_date) FROM pr_records WHERE user_id = pr.user_id AND exercise_type_id = pr.exercise_type_id)
         ORDER  BY et.exercise_type_name;
     """
     return db.query(sql, [user_id])

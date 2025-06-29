@@ -2,13 +2,17 @@
 <html>
 <head>
   <title>Your lifting statistics</title>
+  <link rel="stylesheet" href="/static/main.css">
+
 </head>
 <body>
-
-<h1>Your lifting Statistics</h1>
-
+</div><div class="nav">
+<h3>Your lifting Statistics</h3><p><a href="/">Back to home</a></p></div>
+<div class="columns">
+<div class="content">
+  <h2>Basic training stats:<h2></h2>
 {% for group in stats | groupby('exercise_type_name') %}
-  <h2>Basic training stats: {{ group.grouper }}</h3>
+   <h3>{{ group.grouper }}</h3>
 
     <table border="1" cellpadding="6" cellspacing="0">
     <thead>
@@ -29,9 +33,10 @@
       </tr>
     {% endfor %}
   </table>
-{% endfor %}
+{% endfor %}</div>
 
-<h2>Your latest PR estimates</h2>
+<div class="content">
+<h2>Your latest one-rep maximum estimates:</h2>
 <table border="1" cellpadding="6" cellspacing="0">
   <thead>
     <tr>
@@ -57,7 +62,7 @@
     {% endfor %}
   </tbody>
 </table>
+</div></div>
 
-<p><a href="/">Back to home</a></p>
 </body>
 </html>
