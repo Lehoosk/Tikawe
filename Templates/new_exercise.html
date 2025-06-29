@@ -54,7 +54,9 @@
       Notes:<br />
       <textarea name="note" rows="5" cols="40"></textarea>
     </p>
-    <input type="submit" value="Create" />
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+
+    <input type="submit" value="Save" />
 
   <p>
     <input type="checkbox" name="public" id="public" value="1"

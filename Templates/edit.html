@@ -35,7 +35,7 @@
       <label for="note">Notes:</label><br />
       <textarea name="note" rows="5" cols="40">{{ exercise.note }}</textarea>
     </p>
-
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <input type="submit" value="Save" />
   </form>
 

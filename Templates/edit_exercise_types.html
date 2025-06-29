@@ -15,6 +15,7 @@
           {{ t.exercise_type_name }}
             <form action="/edit_exercise_types" method="post">
             <input type="hidden" name="delete_id" value="{{ t.id }}" />
+            <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
             <button type="submit">Delete</button>
           </form>
         </li>
@@ -27,6 +28,7 @@
   Add new type:
   <form action="/edit_exercise_types" method="post">
     <input type="text" name="name"/>
+    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
     <button type="submit">Add</button>
   </form>
 
