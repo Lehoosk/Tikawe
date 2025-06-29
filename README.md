@@ -5,7 +5,7 @@ Repositorio Tietokannat ja web-ohjelmointi-kurssin harjoitussovellusta varten.
 * Lataa kaikki repositorion tiedostot samaan paikkaan
 * Jos latasit tiedostot zippinä, pura tiedostot ja mene Tikawe-main - kansioon
 
-Seuraavat ohjeet ovat Visual Studio Coden terminaalin komentoina. Samat toimivat pieninä muutoksilla myös muissa terminaaleissa.
+Seuraavat ohjeet ovat Visual Studio Coden terminaalin komentoina. Ohjeiden tulisi toimia pienillä muutoksilla myös muissa terminaaleissa.
 * asemma virtuaaliympäristö komennolla python3 -m venv venv 
 * aktivoi virtuaaliympäristö kommennolla  .\venv\Scripts\Activate.ps1   
 * asenna flask-kirjasto: pip install flask
@@ -26,6 +26,7 @@ Käsitelty palautteen huomiot:
 * Yritetty muokata Templates-kansion nimi -> templates, mutta tällöin git ei enää päivittänyt muutoksia. Palautus toimii itselläni ladattaessa sellaisenaan.
 * Poistettu CSRF-haavoittuvuus ja lisätty käyttäjän oikeuksien tarkastuksia
 * Ulkoasua kehitetty CSS:llä
+* Suuria tietomääriä ei ole käsitelty
 
 Muita parannuksia:
 * Lisätty yksinkertaiset ennusteet teoreettiselle maksimille. Maksimi lasketaan kolmella eri kaavalla. Tulokset esitetään statistics-sivulla, vain uusin tulos esitetään
