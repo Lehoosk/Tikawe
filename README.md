@@ -22,6 +22,13 @@ Käsitelty palautteen huomiot:
 * Poistettu turha import g
 * Koodin laatua pyritty parantamaan pylintillä. Kommentit lisätty jokaiseen funktioon.
 * Viimeiset tietokantakyselyt siirretty pois app.py:stä pois
+* Lisätty käyttäjäsivu, joka aukeaa myös muille käyttäjille
+* Yritetty muokata Templates-kansion nimi -> templates, mutta tällöin git ei enää päivittänyt muutoksia. Palautus toimii itselläni ladattaessa sellaisenaan.
+* Poistettu CSRF-haavoittuvuus ja lisätty käyttäjän oikeuksien tarkastuksia
+
+Muita parannuksia:
+* Lisätty yksinkertaiset ennusteet teoreettiselle maksimille. Maksimi lasketaan kolmella eri kaavalla. Tulokset esitetään statistics-sivulla, vain uusin tulos esitetään
+* Lisätty SQL-scheemaan ON CASCADE ehtoja, joten nyt pystyy poistamaan tietokohteita ilman että tietokanta menee lukkoon
 
 
 ## Välipalautuksen 2 tilanne
