@@ -1,9 +1,22 @@
 import sqlite3
-from flask import Flask, redirect, render_template, request, session, flash
+import secrets
+
+from flask import abort, Flask, redirect, render_template, request, session, flash
 import data
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "varmasalasana"
+
+def require_login():
+    if "user_id" not in session:
+        abort(403)
+
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
+        abort(403)
+
 
 #Page-rendering functions start here:
 @app.route("/")
@@ -25,6 +38,7 @@ def login():
         user_id = data.check_login(username, password)
         if user_id:
             session["user_id"] = user_id
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             return "Error: wrong username or password"
@@ -68,6 +82,7 @@ def register():
 @app.route("/new_exercise", methods=["GET", "POST"])
 def new_exercise():
     """Used to log a new exercise to user"""
+    require_login()
     user_id = session["user_id"]
 
     if request.method == "GET":
@@ -77,6 +92,7 @@ def new_exercise():
         return render_template("new_exercise.html", types=types, classes=classes, default=default)
    
     if request.method == "POST":
+        check_csrf()
         type_id = int(request.form["type_id"])
         weight  = float(request.form["weight"])
         ex_date = request.form["date"]
@@ -94,6 +110,7 @@ def new_exercise():
 @app.route("/exercises")
 def exercises():
     "Renders user's exercise history page"
+    require_login()
     user_id = session["user_id"]
     exercises_list = data.get_user_exercises(user_id)
     types_list = data.get_exercise_types(user_id)
@@ -103,6 +120,7 @@ def exercises():
 @app.route("/edit/<int:exercise_id>", methods=["GET", "POST"])
 def edit_exercise(exercise_id):
     "Renders page to edit single exercise"
+    require_login()
     exercise = data.get_exercise(exercise_id)
     user_id = session["user_id"]
 
@@ -111,6 +129,7 @@ def edit_exercise(exercise_id):
         return render_template("edit.html", exercise=exercise, types=types)
 
     if request.method == "POST":
+        check_csrf()
         type_id = int(request.form["type_id"])
         weight  = float(request.form["weight"])
         ex_date = request.form["date"]
@@ -121,12 +140,15 @@ def edit_exercise(exercise_id):
 @app.route("/remove/<int:exercise_id>", methods=["GET", "POST"])
 def remove(exercise_id):
     "Renders page to delete a single exercise"
+    require_login()
     exercise = data.get_exercise(exercise_id)
 
     if request.method == "GET":
         return render_template("remove.html", exercise=exercise)
 
     if request.method == "POST":
+        check_csrf()
+
         if "remove" in request.form:
             data.remove_exercise(exercise_id)
             data.add_exercise_counter(exercise["user_id"], -1)
@@ -138,6 +160,8 @@ def remove(exercise_id):
 @app.route("/edit_exercise_types", methods=["GET", "POST"])
 def exercise_types():
     "Renders page to edit users exercise types"
+    require_login()
+
     user_id = session["user_id"]
     types = data.get_exercise_types(user_id)
 
@@ -145,6 +169,7 @@ def exercise_types():
         return render_template("edit_exercise_types.html", types=types)
 
     if request.method == "POST":
+        check_csrf()
         if "delete_id" in request.form:
             type_id = int(request.form["delete_id"])
             data.delete_exercise_type(user_id, type_id)
@@ -158,6 +183,7 @@ def exercise_types():
 
 @app.route("/search")
 def search():
+    require_login()
     "Renders a page to view all exercises or by a certain type"
     type_id = request.args.get("type_id", type=int)
     user_id = session["user_id"]
@@ -167,6 +193,7 @@ def search():
 
 @app.route("/comments/<int:exercise_id>", methods=["GET", "POST"])
 def comments(exercise_id):
+    require_login()
     "Renders the comment page"
     exercise = data.get_exercise(exercise_id)
     comments_list = data.get_comments(exercise_id)
@@ -184,6 +211,7 @@ def comments(exercise_id):
 
 @app.route("/stats")
 def stats():
+    require_login()
     "Renders the statistics page"
     user_id = session["user_id"]
     stats_list = data.get_statistics(user_id)
