@@ -78,7 +78,7 @@ def register():
         except sqlite3.IntegrityError:
             flash("Error: username exists")
             return redirect("/register")
- 
+
 @app.route("/new_exercise", methods=["GET", "POST"])
 def new_exercise():
     """Used to log a new exercise to user"""
@@ -90,7 +90,7 @@ def new_exercise():
         default = data.get_user_default(user_id)
         classes = data.get_classes()
         return render_template("new_exercise.html", types=types, classes=classes, default=default)
-   
+  
     if request.method == "POST":
         check_csrf()
         type_id = int(request.form["type_id"])
@@ -130,6 +130,8 @@ def edit_exercise(exercise_id):
 
     if request.method == "POST":
         check_csrf()
+        if exercise["user_id"] != user_id:
+            abort(403)
         type_id = int(request.form["type_id"])
         weight  = float(request.form["weight"])
         ex_date = request.form["date"]
@@ -142,12 +144,16 @@ def remove(exercise_id):
     "Renders page to delete a single exercise"
     require_login()
     exercise = data.get_exercise(exercise_id)
+    user_id = session["user_id"]
 
     if request.method == "GET":
         return render_template("remove.html", exercise=exercise)
 
     if request.method == "POST":
         check_csrf()
+
+        if exercise["user_id"] != user_id:
+            abort(403)
 
         if "remove" in request.form:
             data.remove_exercise(exercise_id)
@@ -161,7 +167,6 @@ def remove(exercise_id):
 def exercise_types():
     "Renders page to edit users exercise types"
     require_login()
-
     user_id = session["user_id"]
     types = data.get_exercise_types(user_id)
 
@@ -170,8 +175,20 @@ def exercise_types():
 
     if request.method == "POST":
         check_csrf()
+
         if "delete_id" in request.form:
             type_id = int(request.form["delete_id"])
+
+            #check, if the owner of the exercise type is the current user. Because the previous query result is a list, need to go thought the list
+            remove_type_id = None
+            for t in types:
+                if t["id"] == type_id:
+                    remove_type_id = t
+                    break
+
+            if remove_type_id is None or remove_type_id["user_id"] != user_id:
+                abort(403)
+
             data.delete_exercise_type(user_id, type_id)
 
         elif "name" in request.form:
@@ -183,8 +200,8 @@ def exercise_types():
 
 @app.route("/search")
 def search():
-    require_login()
     "Renders a page to view all exercises or by a certain type"
+    require_login()
     type_id = request.args.get("type_id", type=int)
     user_id = session["user_id"]
     results = data.get_user_exercises(user_id, type_id)
@@ -193,8 +210,8 @@ def search():
 
 @app.route("/comments/<int:exercise_id>", methods=["GET", "POST"])
 def comments(exercise_id):
-    require_login()
     "Renders the comment page"
+    require_login()
     exercise = data.get_exercise(exercise_id)
     comments_list = data.get_comments(exercise_id)
     user_id = session["user_id"]
@@ -211,8 +228,8 @@ def comments(exercise_id):
 
 @app.route("/stats")
 def stats():
-    require_login()
     "Renders the statistics page"
+    require_login()
     user_id = session["user_id"]
     stats_list = data.get_statistics(user_id)
     pr_list = data.get_pr_statistics(user_id)

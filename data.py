@@ -91,7 +91,7 @@ def check_login(username, password):
 
 def get_exercise_types(user_id):
     "Return all the exercise types by the user"
-    sql = "SELECT id, exercise_type_name FROM exercise_types WHERE user_id = ?"
+    sql = "SELECT id, user_id, exercise_type_name FROM exercise_types WHERE user_id = ?"
     return db.query(sql, [user_id])
 
 def get_classes():
